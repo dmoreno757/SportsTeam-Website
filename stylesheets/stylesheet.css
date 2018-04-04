@@ -1,5 +1,6 @@
-h1 {
+h1, h4 {
     color: orange;
     font-family: sans-serif;
     font: bold;
 }
+

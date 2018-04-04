@@ -6,17 +6,15 @@
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
     <body>
         <?php
-            require('loginData.php');
+            //require('loginData.php');
         ?>
         <h1>CSUF Basketball Analytics</h1>
         <h4>Please Sign in to enter the website</h4>
-        <br>
         <?php
             if ((!isset($_POST['name'])) || (!isset($_POST['password']))) {
 
         ?>
         
-
         <form class="pure-form pure-form-stacked" method="post">
             <fieldset>
                 <div class="pure-control-group">
@@ -35,15 +33,14 @@
                 <?php
                 if ($_POST['userName'] == 'user' && $_POST['passWord'] == 'pass' ) {
                     echo '<p>You in!!!</p>';
-
                 }
                 else {
                          echo '<p>One of the fields are missing</p>';
                 }
             }        
            ?> 
-        
-        
+            <h4>Create Account</h4>
+            <a class="pure-button pure-button-primary" href="login.php">Register</a>
     </body>
 </head>
 </html>
