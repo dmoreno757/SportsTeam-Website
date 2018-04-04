@@ -1,14 +1,23 @@
  <?php
- /** 
- $fname    = preg_replace("/\t|\R/",' ',$_POST['firstName']);
-  $lname    = preg_replace("/\t|\R/",' ',$_POST['lastName']);
-  $street   = preg_replace("/\t|\R/",' ',$_POST['street']);
-  $city     = preg_replace("/\t|\R/",' ',$_POST['city']);
-  $state    = preg_replace("/\t|\R/",' ',$_POST['state']);
-  $country  = preg_replace("/\t|\R/",' ',$_POST['country']);
-  $zip      = preg_replace("/\t|\R/",' ',$_POST['zipCode']);
-*/
+  class loginData {
+    private $firstName = "";
+    private $lastName = "";
+    private $email = "";
+    private $userName = "";
+    private $password = "";
+  }
 
- $userName = preg_replace("/\t|\R/",' ',$_POST['userName']);
- $passWord = preg_replace("/\t|\R/",' ',$_POST['passWord']);
+  function userName() {
+    if ( func_num_args() == 0)
+      {
+        return $this->userName;
+      }
+      else if (func_num_args() == 1)
+      {
+        $value = func_get_arg(0);
+        $this->userName = htmlspecialchars(trim((string)func_get_arg(0)));
+      }
+      return $this;
+  }
+
 ?>
