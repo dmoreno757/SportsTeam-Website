@@ -10,7 +10,10 @@ define('DB_NAME', 'sportsteam');
 $link = mysqli_connect(SERVER, USERNAME, PASSWORD, DB_NAME);
  
 // Check connection
-if($link === false){
-    die("ERROR: Could not connect. " . mysqli_connect_error());
-}
+if (mysqli_connect_errno($link)) {
+     echo "Failed to connect to MySQL: " . mysqli_connect_error(); 
+    } else { 
+        echo 'Successfully connected to your database'; 
+    }
+
 ?>
