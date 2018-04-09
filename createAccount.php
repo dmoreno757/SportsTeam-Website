@@ -1,36 +1,3 @@
-<?
-    session_start();
-    require_once('createDB.php');
- 
-    $firstName = trim($_POST['firstName']);
-    $firstName = strip_tags($_POST['firstName']);
-    $firstName = htmlspecialchars($_POST['firstName']);
-
-    $lastName = trim($_POST['lastName']);
-    $lastName = strip_tags($_POST['lastName']);
-    $lastName = htmlspecialchars($_POST['lastName']);
-
-    $email = trim($_POST['email']);
-    $email = strip_tags($_POST['email']);
-    $email = htmlspecialchars($_POST['email']);
-
-    $userName = trim($_POST['userName']);
-    $userName = strip_tags($_POST['userName']);
-    $userName = htmlspecialchars($_POST['userName']);
-
-    $password = trim($_POST['password']);
-    $password = strip_tags($_POST['password']);
-    $password = htmlspecialchars($_POST['password']); 
-
-    $sqlReg = "INSERT INTO userlogin(Name_First, Name_Last, Email, UserName, Password)
-        VALUES ('$firstName', '$lastName', '$email', '$userName', '$password')";
-    $resultReg = mysql_query($sqlReg) or die(mysql_error());
-    if ($resultReg) {
-        echo "New Record Recorded";
-    }
-    echo $firstName;
-}
-?>
 <!DOCTYPE html>
 <html>
 <head>
