@@ -20,10 +20,16 @@
 
         $password = trim($_REQUEST['password']);
         $password = strip_tags($_REQUEST['password']);
-        $password = htmlspecialchars($_REQUEST['password']); 
+        $password = htmlspecialchars($_REQUEST['password']);
 
-        $sqlReg = "INSERT INTO userlogin(Name_First, Name_Last, Email, UserName, Password)
-        VALUES ('$firstName', '$lastName', '$email', '$userName', '$password')";
+        $role = trim($_REQUEST['role']);
+        $role = strip_tags($_REQUEST['role']);
+        $role = htmlspecialchars($_REQUEST['role']); 
+        
+        if (preg_match('/^[a-zA-Z0-9_]*$/', $password)) {
+            
+        $sqlReg = "INSERT INTO userlogin(Name_First, Name_Last, Email, UserName, Password, Role)
+        VALUES ('$firstName', '$lastName', '$email', '$userName', '$password', '$role')";
         $resultReg = $link->query($sqlReg);
         if ($resultReg === TRUE) {
             echo "New Record Recorded";
@@ -31,4 +37,11 @@
                 echo "error:" .$sqlStatPlayer."</br>".$mysqliStat->error;
         }
          require("login.php");
+            
+        } else {
+
+
+         echo "Password does not follow the standard";
+            require('login.php');
+        }
 ?>

@@ -10,11 +10,13 @@
             $sql = "SELECT ID, Password FROM userLogin where Email = '$email'";
             $result = mysqli_query($link, $sql);
             $row = mysqli_fetch_array($result);
-            $password = $row[1];
             $found = isset($row['found']);
             $counter = mysqli_num_rows($result);
 
-    if ($counter == 1) {
+            $length = 8;
+            $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            $password = substr( str_shuffle( $chars ), 0, $length );
+        if ($counter == 1) {
         require 'PHPMailer\PHPMailerAutoload.php';
 
         $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
@@ -40,12 +42,14 @@
     $mail->WordWrap = 50;                                 // set word wrap to 50 characters
     $mail->IsHTML(true); 
 
-    $mail->Subject = 'Password Recovery';
-    $mail->Body    = 'Your password is <b>'.$password.'</b>';
+    $mail->Subject = 'Temporary Password';
+    $mail->Body    = 'Your temporary password is <b>'.$password.'</b>'." ".'<a href="http://localhost/SportsTeam-Website/changePasswordForm.php" target="_top">Reset Password</a>';
 
     if($mail->Send())
     {
         echo "Message has been sent";
+        $sqlUpdate = "UPDATE UserLogin SET Password='$password' WHERE Email='$email'";
+        mysqli_query($link, $sqlUpdate);
         require("login.php");
     } else {
         echo "Email error";

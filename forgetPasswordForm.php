@@ -1,5 +1,4 @@
 <!DOCTYPE html>
- 
 <html>
 <head>
     <Title> Password Reset</title>
@@ -19,6 +18,8 @@
             </div>
         </div>
         <button class="pure-button pure-button-primary" type="submit" name="submit" value="submit">Submit</button>
+        <a class="pure-button pure-button-primary" href="login.php">Back</a>
+
     </fieldset>
 </form>
     </body>
