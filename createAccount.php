@@ -8,6 +8,8 @@
     <form class="pure-form pure-form-stacked" method="post" action="newRegistration.php">
     <fieldset>
         <h1>Registration Form</h1>
+        <strong>***For User Name and Password Rules***</strong>
+        <br>
         <strong>- Must be alphanumeric characters</strong>
         <br>
         <strong>- Can use underscore</strong>

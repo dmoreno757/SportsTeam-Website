@@ -25,19 +25,73 @@
         $role = trim($_REQUEST['role']);
         $role = strip_tags($_REQUEST['role']);
         $role = htmlspecialchars($_REQUEST['role']); 
+
+      
         
-        if (preg_match('/^[a-zA-Z0-9_]*$/', $password)) {
+        if (preg_match('/^[a-zA-Z0-9_]*$/', $password) && (preg_match('/^[a-zA-Z0-9_]*$/', $userName))) {
+        $passwordHashed = password_hash($password, PASSWORD_DEFAULT);
+        if ($_REQUEST['role'] == 'Observer') {
+        $sql = "grant Select ON SportsTeam.* TO '$userName' identified by '$password'";
+        $resultPrev = $link->query($sql);
+        if ($resultPrev === TRUE) {
+            echo "Updated privelages";
+            } else {
+                echo "error:".$sql. "<br>".$link->error;
+             }
+        }
+        if ($_REQUEST['role'] == 'Users') {
+        $sql = "grant Create, Select, Update, Delete ON SportsTeam.* TO '$userName' identified by '$password'";
+        $resultPrev = $link->query($sql);
+        if ($resultPrev === TRUE) {
+            echo "Updated privelages";
+            } else {
+                echo "error:".$sql. "<br>".$link->error;
+             }
+        }
+        if ($_REQUEST['role'] == 'Users') {
+        $sql = "grant Create, Select, Update, Delete ON SportsTeam.* TO '$userName' identified by '$password'";
+        $resultPrev = $link->query($sql);
+        if ($resultPrev === TRUE) {
+            echo "Updated privelages";
+            } else {
+                echo "error:".$sql. "<br>".$link->error;
+             }
+        }
+        if ($_REQUEST['role'] == 'Executive Manager') {
+        $sql = "grant Create, Select, Update, Delete ON SportsTeam.* TO '$userName' identified by '$password'";
+        $resultPrev = $link->query($sql);
+        if ($resultPrev === TRUE) {
+            echo "Updated privelages";
+            } else {
+                echo "error:".$sql. "<br>".$link->error;
+             }
+        }
+        if ($_REQUEST['role'] == 'DBS Administrator') {
+        $sql = "GRANT ALL ON SportsTeam.* TO '$userName' identified by '$password'";
+        $resultPrev = $link->query($sql);
+        if ($resultPrev === TRUE) {
+            echo "Updated privelages";
+            } else {
+                echo "error:".$sql. "<br>".$link->error;
+             }
+        }
+        else {
+            echo('Role not defined');
+        }
+           
             
         $sqlReg = "INSERT INTO userlogin(Name_First, Name_Last, Email, UserName, Password, Role)
-        VALUES ('$firstName', '$lastName', '$email', '$userName', '$password', '$role')";
+        VALUES ('$firstName', '$lastName', '$email', '$userName', '$passwordHashed', '$role')";
         $resultReg = $link->query($sqlReg);
+        
+        
         if ($resultReg === TRUE) {
             echo "New Record Recorded";
             } else {
                 echo "error:" .$sqlStatPlayer."</br>".$mysqliStat->error;
         }
          require("login.php");
-            
+        echo($role);
         } else {
 
 

@@ -8,12 +8,26 @@
         $password = strip_tags($_REQUEST['password']);
         $password = htmlspecialchars($_REQUEST['password']); 
 
-        $sql = "SELECT ID FROM userLogin where UserName = '$userName' AND Password = '$password'";
+        $sql = "SELECT ID, Password FROM userLogin where UserName = '$userName'";
         $result = mysqli_query($link, $sql);
         $row = mysqli_fetch_array($result);
+        $hash = $row[1];
         $found = $row['found'];
         $counter = mysqli_num_rows($result);
 
+        if (password_verify($password, $hash)) {
+                    echo 'Password is valid!';
+                    $_SESSION['login_user'] = $userName;
+                    header("location: welcome.php");
+        } else {
+                 echo ("<p> Your Login Name or Password is invalid </p>");
+                 echo($hash);
+                 echo($password);
+                 require("login.php");
+        }
+
+
+        /**
         if($counter == 1) {
             $_SESSION['login_user'] = $userName;
             header("location: welcome.php");
@@ -21,4 +35,5 @@
                     echo ("<p> Your Login Name or Password is invalid </p>");
                     require("login.php");
                 }  
+                */
         ?>
