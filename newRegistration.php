@@ -34,39 +34,39 @@
         $sql = "grant Select ON SportsTeam.* TO '$userName' identified by '$password'";
         $resultPrev = $link->query($sql);
         if ($resultPrev === TRUE) {
-            echo "Updated privelages";
+            echo "Updated privelages 1";
             } else {
                 echo "error:".$sql. "<br>".$link->error;
              }
         }
-        if ($_REQUEST['role'] == 'Users') {
+        else if ($_REQUEST['role'] == 'Users') {
         $sql = "grant Create, Select, Update, Delete ON SportsTeam.* TO '$userName' identified by '$password'";
         $resultPrev = $link->query($sql);
         if ($resultPrev === TRUE) {
-            echo "Updated privelages";
+            echo "Updated privelages 2";
             } else {
                 echo "error:".$sql. "<br>".$link->error;
              }
         }
-        if ($_REQUEST['role'] == 'Users') {
+        else if ($_REQUEST['role'] == 'Users') {
         $sql = "grant Create, Select, Update, Delete ON SportsTeam.* TO '$userName' identified by '$password'";
         $resultPrev = $link->query($sql);
         if ($resultPrev === TRUE) {
-            echo "Updated privelages";
+            echo "Updated privelages 3";
             } else {
                 echo "error:".$sql. "<br>".$link->error;
              }
         }
-        if ($_REQUEST['role'] == 'Executive Manager') {
+        else if ($_REQUEST['role'] == 'Executive Manager') {
         $sql = "grant Create, Select, Update, Delete ON SportsTeam.* TO '$userName' identified by '$password'";
         $resultPrev = $link->query($sql);
         if ($resultPrev === TRUE) {
-            echo "Updated privelages";
+            echo "Updated privelages 4";
             } else {
                 echo "error:".$sql. "<br>".$link->error;
              }
         }
-        if ($_REQUEST['role'] == 'DBS Administrator') {
+        else if ($_REQUEST['role'] == 'DBS Administrator') {
         $sql = "GRANT ALL ON SportsTeam.* TO '$userName' identified by '$password'";
         $resultPrev = $link->query($sql);
         if ($resultPrev === TRUE) {
