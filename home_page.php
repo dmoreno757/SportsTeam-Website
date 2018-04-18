@@ -12,14 +12,14 @@
 
       // Connect to database
       require_once( 'Adaptation.php' );
-      $db = new mysqli(DATA_BASE_HOST, USER_NAME, USER_PASSWORD, DATA_BASE_NAME);
+      require('createDB.php');
 
       // if connection was successful
       if( mysqli_connect_error() == 0 )  // Connection succeeded
       {
 ////////////////////////////// ---QUERY 2---- ///////////////////////////////////////////////
 		  $querytwo = "SELECT * FROM LeagueTeam";
-		  if(!$resulttwo = $db->query($querytwo))
+		  if(!$resulttwo = $link->query($querytwo))
 		  {
 			  die('There was an error running the query part 2 ');
 		  }
@@ -32,8 +32,8 @@ $query3 = "SELECT t1.TeamID_A, t1.GameRound, t1.TeamAPoints,  t2.TeamName
 				 ORDER BY GameRound"; 
 				
            // Check connection
-             if($db === false){
-              die("ERROR: Could not connect. " . $db->connect_error);
+             if($link === false){
+              die("ERROR: Could not connect. " . $link->connect_error);
                               }
 
 							  
@@ -46,8 +46,8 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
 				 ORDER BY GameRound"; 
 				
            // Check connection
-             if($db === false){
-              die("ERROR: Could not connect. " . $db->connect_error);
+             if($link === false){
+              die("ERROR: Could not connect. " . $link->connect_error);
                               }
 
 							  
@@ -88,7 +88,7 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
                     TeamRoster.Name_First";
 
         // Prepare, execute, store results, and bind results to local variables
-        $stmt = $db->prepare($query);
+        $stmt = $link->prepare($query);
         // no query parameters to bind
         $stmt->execute();
         $stmt->store_result();
@@ -267,7 +267,7 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
       <?php
         $fmt_style = 'style="vertical-align:top; border:1px solid black;"';
 	  
-		  if(($result3 = $db->query($query3)) && ($result4 = $db->query($query4))  ){
+		  if(($result3 = $link->query($query3)) && ($result4 = $link->query($query4))  ){
 		   if(($result3->num_rows > 0) && ($result4->num_rows > 0) ){
           
 				while (($row = $result3->fetch_array()) && ($row2 = $result4->fetch_array()) )
