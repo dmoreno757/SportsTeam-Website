@@ -24,6 +24,8 @@ if ($conn->connect_error) {
 $sql = "SELECT id, Name_First, Name_Last, UserName, Role FROM userlogin";
 $result = $conn->query($sql);
 
+echo  "Registered Users <br><br>";
+
 
 if ($result->num_rows > 0) {
   // output data of each row
@@ -38,29 +40,36 @@ if ($result->num_rows > 0) {
 } else {
   echo "0 results";
 }
+
+
+echo  "<br><br>Who coached last week’s game? <br><br>";
+
+$sql2 = "SELECT TeamID, TeamName, TeamCoach FROM leagueteam";
+$result2 = $conn->query($sql2);
+
+if ($result->num_rows > 0) {
+  // output data of each row
+  while($row = $result2->fetch_assoc()) 
+  {
+
+
+      echo "Team " . $row["TeamID"]. " ~~~~~~~~  " . $row["TeamCoach"]. " coached last week's game for the " . 
+      $row["TeamName"]. "<br>";
+  }
+} else {
+  echo "0 results";
+}
+
 $conn->close();
+
+
+
+echo  "<br><br> Who has logged in in the past 48 hours?  <br><br>";
 
 
 
 ?> 
 
-    <h1> PLACEHOLDER</h1>
-    <h2> Who Coached Last Week's Game</h2>
-
-   <?php
-   
-   echo "Team's Coach"
-
-   ?> 
-
-    <h1> PLACEHOLDER</h1>
-    <h2> User Logins Within 48 Hours</h2>
-
-  <?php
-   
-   echo "0 Users "
-
-   ?> 
 
 
 </body>
