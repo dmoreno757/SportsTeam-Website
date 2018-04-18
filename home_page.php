@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>CPSC 431 Project</title>
   </head>
+
   <body>
     <h1 style="text-align:center">Cal State Fullerton Basketball Statistics</h1>
 
     <?php
+      require('navbar.php');
       require('Address.php');
       require('PlayerStatistic.php');
 
@@ -221,13 +224,13 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
       </tr>
     </table>
 <h2 style="text-align:center">Team League Chart</h2>
-<table style="border:1px solid black; border-collapse:collapse;">
+<table class="table table-bordered table-dark">
+<thead>
       <tr>
        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;"></th>
         <th colspan="2" style="vertical-align:top; border:1px solid black; background: lightblue;">Team Names</th>
-        
-        
       </tr>
+</thead>
       <?php
         $fmt_style = 'style="vertical-align:top; border:1px solid black;"';
         $stmt->data_seek(0);
@@ -254,16 +257,15 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
 </table>
 
 
-<h2 style="text-align:center">TeamA vs. TeamB Game Stats</h2>
-<table style="border:1px solid black; border-collapse:collapse;">
+    <h2 style="text-align:center">TeamA vs. TeamB Game Stats</h2>
+    <table class="table table-striped table-dark">
+    <thead>
       <tr>
-       
-  
-        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;"> Game Round </th>
+    <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;"> Game Round </th>
 		<th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;">Team Name</th>
 		<th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;">  Points  </th>
-        
       </tr>
+      </thead>
       <?php
         $fmt_style = 'style="vertical-align:top; border:1px solid black;"';
 	  
@@ -306,23 +308,25 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
       echo "Number of Records:  ".$stmt->num_rows."<br/>";
     ?>
 
-    <table style="border:1px solid black; border-collapse:collapse;">
+<table class="table table-bordered table-dark">
+  <thead>
       <tr>
-        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightgreen;"></th>
-        <th colspan="2" style="vertical-align:top; border:1px solid black; background: lightgreen;">Player</th>
-        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightgreen;"></th>
-        <th colspan="4" style="vertical-align:top; border:1px solid black; background: lightgreen;">Statistic Averages</th>
+        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;"></th>
+        <th colspan="2" style="vertical-align:top; border:1px solid black; background: lightblue;">Player</th>
+        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;"></th>
+        <th colspan="4" style="vertical-align:top; border:1px solid black; background: lightblue;">Statistic Averages</th>
       </tr>
+      </thead>
       <tr>
-        <th style="vertical-align:top; border:1px solid black; background: lightgreen;"></th>
-        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Name</th>
-        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Address</th>
+        <th style="vertical-align:top; border:1px solid black; background: lightblue;"></th>
+        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Name</th>
+        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Address</th>
 
-        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Games Played</th>
-        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Time on Court</th>
-        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Points Scored</th>
-        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Number of Assists</th>
-        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Number of Rebounds</th>
+        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Games Played</th>
+        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Time on Court</th>
+        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Points Scored</th>
+        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Number of Assists</th>
+        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Number of Rebounds</th>
       </tr>
       <?php
         $fmt_style = 'style="vertical-align:top; border:1px solid black;"';
@@ -385,6 +389,9 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
         }
       ?>
     </table>
-
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  
   </body>
 </html>

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<?php include('navbar.php'); ?>
 
 <body>
-    <h1> PLACEHOLDER</h1>
-    <h2> List of Users Registered</h2>
+        <h1 style="text-align:center">Cal State Fullerton Basketball Statistics</h1>
+
     
 <?php
+      require('navbar.php');
+
 $servername = "localhost";
 $username = "root";
 $password = "";
