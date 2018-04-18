@@ -21,7 +21,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT id, Name_First, Name_Last, UserName, Role FROM userlogin";
+$sql = "SELECT id, Name_First, Name_Last, UserName, Role, dt FROM userlogin";
 $result = $conn->query($sql);
 
 echo  "Registered Users <br><br>";
@@ -35,7 +35,7 @@ if ($result->num_rows > 0) {
 
       echo "User ID: " . $row["id"]. " ~~~~~~~~ Name: " . $row["Name_First"]. " " . 
       $row["Name_Last"]. " ~~~~~~~~ UserName: " .
-       $row["UserName"]. " ~~~~~~~~   Role: " . $row["Role"].  "<br>";
+       $row["UserName"]. " ~~~~~~~~   Role: " . $row["Role"]. "Date: " . $row["dt"]. "<br>";
   }
 } else {
   echo "0 results";
@@ -60,12 +60,28 @@ if ($result->num_rows > 0) {
   echo "0 results";
 }
 
-$conn->close();
 
+$sql3 = "SELECT UserName, Role, dt FROM userlogin";
+$result3 = $conn->query($sql3);
 
 
 echo  "<br><br> Who has logged in in the past 48 hours?  <br><br>";
 
+
+if ($result->num_rows > 0) {
+  // output data of each row
+  while($row = $result3->fetch_assoc()) 
+  {
+
+      echo "" . $row["UserName"]. ", an " . $row["Role"]. ", has been active in the last 48 hours (" . 
+      $row["dt"]. " )" . "<br>";
+  }
+} else {
+  echo "0 results";
+}
+
+
+$conn->close();
 
 
 ?> 

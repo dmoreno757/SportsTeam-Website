@@ -14,7 +14,8 @@ CREATE TABLE UserLogin
     Email         VARCHAR(250),
     UserName      VARCHAR(100),
     Password      VARCHAR(100),
-    Role          VARCHAR(100)
+    Role          VARCHAR(100),
+    dt DATETIME
 );
 
 CREATE TABLE LeagueTeam
