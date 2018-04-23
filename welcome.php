@@ -21,8 +21,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT id, Name_First, Name_Last, UserName, Role, dt FROM userlogin";
-$result = $conn->query($sql);
+$sql = "SELECT id, Name_First, Name_Last, UserName, Role, ts FROM userlogin";
+$result = $conn->query($sql) or die($conn->error);
 
 echo  "Registered Users <br><br>";
 
@@ -35,7 +35,7 @@ if ($result->num_rows > 0) {
 
       echo "User ID: " . $row["id"]. " ~~~~~~~~ Name: " . $row["Name_First"]. " " . 
       $row["Name_Last"]. " ~~~~~~~~ UserName: " .
-       $row["UserName"]. " ~~~~~~~~   Role: " . $row["Role"]. "Date: " . $row["dt"]. "<br>";
+       $row["UserName"]. " ~~~~~~~~   Role: " . $row["Role"]. " ~~~~~~~~ Date: " . $row["ts"]. "<br>";
   }
 } else {
   echo "0 results";
@@ -45,7 +45,7 @@ if ($result->num_rows > 0) {
 echo  "<br><br>Who coached last week’s game? <br><br>";
 
 $sql2 = "SELECT TeamID, TeamName, TeamCoach FROM leagueteam";
-$result2 = $conn->query($sql2);
+$result2 = $conn->query($sql2) or die($conn->error);
 
 if ($result->num_rows > 0) {
   // output data of each row
@@ -61,7 +61,7 @@ if ($result->num_rows > 0) {
 }
 
 
-$sql3 = "SELECT UserName, Role, dt FROM userlogin";
+$sql3 = "SELECT UserName, Role, ts FROM userlogin";
 $result3 = $conn->query($sql3);
 
 
@@ -73,8 +73,8 @@ if ($result->num_rows > 0) {
   while($row = $result3->fetch_assoc()) 
   {
 
-      echo "" . $row["UserName"]. ", an " . $row["Role"]. ", has been active in the last 48 hours (" . 
-      $row["dt"]. " )" . "<br>";
+      echo "" . $row["UserName"]. ", an " . $row["Role"]. ", has been active in the last 48 hours ( " . 
+      $row["ts"]. " )" . "<br>";
   }
 } else {
   echo "0 results";

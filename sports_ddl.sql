@@ -15,7 +15,7 @@ CREATE TABLE UserLogin
     UserName      VARCHAR(100),
     Password      VARCHAR(100),
     Role          VARCHAR(100),
-    dt DATETIME
+    ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE LeagueTeam
