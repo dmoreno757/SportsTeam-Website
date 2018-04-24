@@ -18,6 +18,9 @@
         if (password_verify($password, $hash)) {
                     echo 'Password is valid!';
                     $_SESSION['login_user'] = $userName;
+                    $update_query = "UPDATE UserLogin SET ts = CURRENT_TIMESTAMP where UserName = '$userName'";
+                    $result2 = mysqli_query($link, $update_query);
+                    $row2 = mysqli_fetch_array($result2);
                     header("location: welcome.php");
         } else {
                  echo ("<p> Your Login Name or Password is invalid </p>");

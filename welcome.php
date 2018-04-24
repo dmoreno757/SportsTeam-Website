@@ -5,10 +5,42 @@
 <body>
         <h1 style="text-align:center">Cal State Fullerton Basketball Statistics</h1>
 
-    
-<?php
-      require('navbar.php');
+       
 
+
+
+<table class="table table-bordered table-dark">
+      <tr>
+        <th style="vertical-align:top; border:1px solid black; background: darkblue;">Database Statistics at a Glance</th>
+      </tr>
+      <?php
+
+        require('navbar.php');
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "sportsteam";
+        
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        $sql = "SELECT id, Name_First, Name_Last, UserName, Role FROM userlogin";
+      $result = $conn->query($sql) or die($conn->error);
+
+        echo "      <td </td>\n";
+
+
+        
+        
+      ?>
+
+  
+<?php
+      //require('navbar.php');
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -21,10 +53,11 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT id, Name_First, Name_Last, UserName, Role, ts FROM userlogin";
+$sql = "SELECT id, Name_First, Name_Last, UserName, Role FROM userlogin";
 $result = $conn->query($sql) or die($conn->error);
 
 echo  "Registered Users <br><br>";
+
 
 
 if ($result->num_rows > 0) {
@@ -32,10 +65,9 @@ if ($result->num_rows > 0) {
   while($row = $result->fetch_assoc()) 
   {
 
-
       echo "User ID: " . $row["id"]. " ~~~~~~~~ Name: " . $row["Name_First"]. " " . 
       $row["Name_Last"]. " ~~~~~~~~ UserName: " .
-       $row["UserName"]. " ~~~~~~~~   Role: " . $row["Role"]. " ~~~~~~~~ Date: " . $row["ts"]. "<br>";
+       $row["UserName"]. " ~~~~~~~~   Role: " . $row["Role"].  "<br>";
   }
 } else {
   echo "0 results";
@@ -93,20 +125,6 @@ $conn->close();
 </html>
 
 <?php
-/*
-    ?>
-
-    <table style="border:1px solid black; border-collapse:collapse;">
-      <tr>
-        <th style="vertical-align:top; border:1px solid black; background: lightgreen;"></th>
-        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">UserID</th>
-        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">First Name</th>
-        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Last Name</th>
-        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Username</th>
-        
-      </tr>
-      <?php
-*/
 
 
 
