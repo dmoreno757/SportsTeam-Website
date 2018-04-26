@@ -106,18 +106,26 @@ while($row = $result->fetch_assoc())
 
  </tr>
 
-  }
 
 
 <?php
 $sql = "SELECT UserName, Role, ts FROM userlogin";
 $result = $conn->query($sql) or die($conn->error);
 
+
+
+
+
+
 if ($result->num_rows > 0) {
 // output data of each row
 while($row = $result->fetch_assoc()) 
 {
-
+  $timest = $row['ts'];
+  $time = strtotime($timest);
+  $curtime = time();
+  if(($curtime-$time) < 172800)  //172800 seconds = 48 hours
+  {  
   echo "      <td </td>\n";
   echo "      <td </td>\n";
   echo "$row[UserName]";
@@ -126,7 +134,7 @@ while($row = $result->fetch_assoc())
   echo "      <td </td>\n";
   echo " $row[ts]";
   echo "      <tr>\n";
-
+}
 
 }
 }
