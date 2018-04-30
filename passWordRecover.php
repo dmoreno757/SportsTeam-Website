@@ -1,6 +1,7 @@
 <?php
 //Load Composer's autoloader
  require("createDB.php");
+// require_once('rootConnections.php');
 
   if (isset($_REQUEST['submit'])) {
             $email = trim($_REQUEST['email']);
