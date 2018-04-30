@@ -12,11 +12,9 @@
       require('navbar.php');
       require('Address.php');
       require('PlayerStatistic.php');
-
       // Connect to database
-      require_once( 'Adaptation.php' );
-      require('createDB.php');
-
+      // require_once( 'Adaptation.php' );
+      require_once('createDB.php');
       // if connection was successful
       if( mysqli_connect_error() == 0 )  // Connection succeeded
       {
@@ -26,9 +24,7 @@
 		  {
 			  die('There was an error running the query part 2 ');
 		  }
-
 /////////////////////////////// ---QUERY 3---- ///////////////////////////////////////////////		  
-
 $query3 = "SELECT t1.TeamID_A, t1.GameRound, t1.TeamAPoints,  t2.TeamName
 				FROM GP_TeamA AS t1 INNER JOIN LeagueTeam AS t2
 				 ON t1.TeamID_A = t2.TeamID
@@ -38,11 +34,8 @@ $query3 = "SELECT t1.TeamID_A, t1.GameRound, t1.TeamAPoints,  t2.TeamName
              if($link === false){
               die("ERROR: Could not connect. " . $link->connect_error);
                               }
-
 							  
-
 /////////////////////////////// ---QUERY 4---- ///////////////////////////////////////////////
-
 $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
 				FROM GP_TeamB AS t3 INNER JOIN LeagueTeam AS t2
 				 ON t3.TeamID_B = t2.TeamID
@@ -52,20 +45,12 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
              if($link === false){
               die("ERROR: Could not connect. " . $link->connect_error);
                               }
-
 							  
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 		  
         
 		// Build query to retrieve player's name, address, and averaged statistics from the joined Team Roster and Statistics tables
         $query = "SELECT
-		
-
-		
                     TeamRoster.ID,
                     TeamRoster.Name_First,
                     TeamRoster.Name_Last,
@@ -74,7 +59,6 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
                     TeamRoster.State,
                     TeamRoster.Country,
                     TeamRoster.ZipCode,
-
                     COUNT(Statistics.Player),
                     AVG(Statistics.PlayingTimeMin),
                     AVG(Statistics.PlayingTimeSec),
@@ -89,16 +73,13 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
                   ORDER BY
                     TeamRoster.Name_Last,
                     TeamRoster.Name_First";
-
         // Prepare, execute, store results, and bind results to local variables
         $stmt = $link->prepare($query);
         // no query parameters to bind
         $stmt->execute();
         $stmt->store_result();
         $stmt->bind_result(
-						   
-						   
-						   $Name_ID,
+						               $Name_ID,
                            $Name_First,
                            $Name_Last,
                            $Street,
@@ -106,7 +87,6 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
                            $State,
                            $Country,
                            $ZipCode,
-
                            $GamesPlayed,
                            $PlayingTimeMin,
                            $PlayingTimeSec,
@@ -235,7 +215,6 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
         $fmt_style = 'style="vertical-align:top; border:1px solid black;"';
         $stmt->data_seek(0);
         $row_number = 0;
-
         while( $stmt->fetch() )
         {
           // construct Address and PlayerStatistic objects supplying as constructor parameters the retrieved database columns
@@ -332,7 +311,6 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
         $fmt_style = 'style="vertical-align:top; border:1px solid black;"';
         $stmt->data_seek(0);
         $row_number = 0;
-
         // for each row (record) of data retrieved from the database emit the html to populate a row in the table
         // for example:
         //  <tr>
@@ -362,7 +340,6 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
           // construct Address and PlayerStatistic objects supplying as constructor parameters the retrieved database columns
           $player = new Address([$Name_First, $Name_Last], $Street, $City, $State, $Country, $ZipCode);
           $stat   = new PlayerStatistic([$Name_First, $Name_Last], [$PlayingTimeMin, $PlayingTimeSec], $Points, $Assists, $Rebounds);
-
           // Emit table row data using appropriate getters from the Address and PlayerStatistic objects
           echo "      <tr>\n";
           echo "        <td  $fmt_style>".++$row_number."</td>\n";

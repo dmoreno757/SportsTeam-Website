@@ -1,28 +1,84 @@
-drop database if exists         SportsTeam;
-create database                 SportsTeam;
+DROP   DATABASE IF EXISTS SportsTeam;
+CREATE DATABASE           SportsTeam;
 
-DROP USER IF EXISTS "root";
-GRANT SELECT, INSERT, DELETE, UPDATE ON *.* TO 'root'@'localhost';
 
+--Role based access users
+  DROP   USER IF EXISTS 'Observer'@'localhost';
+  CREATE USER           'Observer'@'localhost' IDENTIFIED BY 'Password1';
+
+  DROP   USER IF EXISTS 'Users'@'localhost';
+  CREATE USER           'Users'@'localhost' IDENTIFIED BY 'Password2';
+
+  DROP   USER IF EXISTS 'Executive Manager'@'localhost';
+  CREATE USER           'Executive Manager'@'localhost' IDENTIFIED BY 'Password3';
+  
+
+
+--Database administration users
+  DROP USER IF EXISTS 'admin'@'localhost';
+  Create USER 'admin'@'localhost' IDENTIFIED BY 'Password4';
+  
+  GRANT ALL PRIVILEGES ON SportsTeam.* TO 'admin'@'localhost';
+
+
+  
+
+  
+  
+  
 USE SportsTeam;
+
+
+
+CREATE TABLE Roles
+(
+  ID_Role        TINYINT UNSIGNED   AUTO_INCREMENT   PRIMARY KEY,
+  roleName       VARCHAR(30)        NOT NULL   UNIQUE   COMMENT 'Must match Database Users'
+);
+
+GRANT select, insert, delete, update ON Roles TO 'Executive Manager'@'localhost';
+
+INSERT INTO Roles VALUES 
+-- NOTE:  These values MUST match the Database Users created at the end of this script
+ (1, 'Observer'),  -- DEFAULT value
+ (2, 'Users'),
+ (3, 'Executive Manager');
+
+
+
+
+
 
 CREATE TABLE UserLogin
 (
-    ID            INT(10)          UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    ID            INTEGER          UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     Name_First    VARCHAR(100),
     Name_Last     VARCHAR(150)     NOT NULL,
     Email         VARCHAR(250),
-    UserName      VARCHAR(100),
-    Password      VARCHAR(100),
-    Role          VARCHAR(100),
-    ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    UserName      VARCHAR(100)     UNIQUE,
+    Password      CHAR(60),
+    Role          TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    ts            TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (Role) REFERENCES Roles(ID_Role) ON DELETE CASCADE
 );
+
+GRANT select, insert, delete, update ON UserLogin TO 'Executive Manager'@'localhost';
+
+
+
+
+
 
 CREATE TABLE LeagueTeam
 ( TeamID      INTEGER UNSIGNED NOT NULL AUTO_INCREMENT  PRIMARY KEY,
   TeamName    VARCHAR(100),
   TeamCoach   VARCHAR(100)
 );
+
+GRANT         Select                 ON LeagueTeam TO 'Observer'         @'localhost';
+GRANT Insert, Select, Update, Delete ON LeagueTeam TO 'Users'            @'localhost';
+GRANT Insert, Select, Update, Delete ON LeagueTeam TO 'Executive Manager'@'localhost';
 
 
 INSERT INTO LeagueTeam VALUES
@@ -35,13 +91,23 @@ INSERT INTO LeagueTeam VALUES
 ('7','CSUSB Wolfs','Joker'),
 ('8','CSULA Eagles','Vin Diesel');
 
+
+
+
+
+
 CREATE TABLE GP_TeamA
 (
-TeamID_A  INTEGER UNSIGNED  NOT NULL,
-GameRound INTEGER    UNSIGNED  NOT NULL,
-TeamAPoints   VARCHAR(100),
-FOREIGN KEY (TeamID_A) REFERENCES LeagueTeam(TeamID) ON DELETE CASCADE
+  TeamID_A  INTEGER UNSIGNED  NOT NULL,
+  GameRound INTEGER    UNSIGNED  NOT NULL,
+  TeamAPoints   VARCHAR(100),
+  
+  FOREIGN KEY (TeamID_A) REFERENCES LeagueTeam(TeamID) ON DELETE CASCADE
 );
+
+GRANT         Select                 ON GP_TeamA TO 'Observer'         @'localhost';
+GRANT Insert, Select, Update, Delete ON GP_TeamA TO 'Users'            @'localhost';
+GRANT Insert, Select, Update, Delete ON GP_TeamA TO 'Executive Manager'@'localhost';
 
 INSERT INTO GP_TeamA VALUES
 ('1','1','50'),
@@ -52,6 +118,11 @@ INSERT INTO GP_TeamA VALUES
 ('6','2','50'),
 ('1','3','20');
 
+
+
+
+
+
 CREATE TABLE GP_TeamB
 (
 TeamID_B INTEGER UNSIGNED NOT NULL,
@@ -60,6 +131,9 @@ TeamBPoints VARCHAR(100),
 FOREIGN KEY (TeamID_B) REFERENCES LeagueTeam(TeamID) ON DELETE CASCADE
 );
 
+GRANT         Select                 ON GP_TeamB TO 'Observer'         @'localhost';
+GRANT Insert, Select, Update, Delete ON GP_TeamB TO 'Users'            @'localhost';
+GRANT Insert, Select, Update, Delete ON GP_TeamB TO 'Executive Manager'@'localhost';
    
 INSERT INTO GP_TeamB VALUES
 ('2','1','20'),
@@ -69,6 +143,10 @@ INSERT INTO GP_TeamB VALUES
 ('4','2','35'),
 ('7','2','30'),
 ('6','3','15');
+
+
+
+
 
 
 CREATE TABLE TeamRoster
@@ -87,6 +165,10 @@ CREATE TABLE TeamRoster
   UNIQUE (Name_Last, Name_First)
 );
 
+GRANT         Select                 ON TeamRoster TO 'Observer'         @'localhost';
+GRANT Insert, Select, Update, Delete ON TeamRoster TO 'Users'            @'localhost';
+GRANT Insert, Select, Update, Delete ON TeamRoster TO 'Executive Manager'@'localhost';
+
 INSERT INTO TeamRoster VALUES
 ('100', 'Donald',               'Duck',    '1313 S. Harbor Blvd.',    'Anaheim',            'CA',            'USA',     '92808-3232'),
 ('101', 'Daisy',                'Duck',    '1180 Seven Seas Dr.',     'Lake Buena Vista',   'FL',            'USA',     '32830'),
@@ -100,6 +182,9 @@ INSERT INTO TeamRoster VALUES
 ('108', 'Phooey',               'Duck',    '1-1 Maihama Urayasu',     'Chiba Prefecture',   'Disney Tokyo',  'Japan',   NULL),
 
 ('109', 'Della',                'Duck',    '77700 Boulevard du Parc', 'Coupvray',           'Disney Paris',  'France',  NULL);
+
+
+
 
 
 
@@ -118,6 +203,10 @@ CREATE TABLE Statistics
   CHECK((PlayingTimeMin < 40 AND PlayingTimeSec < 60) OR 
         (PlayingTimeMin = 40 AND PlayingTimeSec = 0 ))
 );
+
+GRANT         Select                 ON Statistics TO 'Observer'         @'localhost';
+GRANT Insert, Select, Update, Delete ON Statistics TO 'Users'            @'localhost';
+GRANT Insert, Select, Update, Delete ON Statistics TO 'Executive Manager'@'localhost';
 
 INSERT INTO Statistics VALUES
 ('17', '100', '35', '12', '47', '11', '21'),

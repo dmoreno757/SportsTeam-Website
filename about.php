@@ -5,7 +5,7 @@
 <body bgcolor="lightblue">
         <h1 style="text-align:center">Cal State Fullerton Basketball Statistics</h1>
 <?php
-      require('navbar.php');
+      require_once('navbar.php');
 ?>
 <br>
 <h2> Created by David Moreno, </h2>

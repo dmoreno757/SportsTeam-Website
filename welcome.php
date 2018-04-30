@@ -1,4 +1,18 @@
 <!DOCTYPE html>
+<?php
+          require_once('createDB.php');
+          // if( !authenticatedUser() )
+          //     {
+          //       echo "You must be logged in to access this page<br/>";
+          //       echo "-- display login form --<br/>";
+          //       return;
+          //     }
+  
+              
+              echo "You are loggin as '" . $_SESSION['UserName'] . "' as '" . $_SESSION['UserRole'] . "'<br/>";
+              echo "-- display login form --<br/>";
+          
+?>
 <html>
 <head>
 
@@ -14,29 +28,20 @@
 
       <tr>
         <th style="vertical-align:top; border:1px solid black; background: darkblue;">Registered Users IDs</th>
-        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Name</th>
+        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Team Name</th>
         <th style="vertical-align:top; border:1px solid black; background: lightblue;">Username</th>
         <th style="vertical-align:top; border:1px solid black; background: lightblue;">Role</th>
 
       </tr>
       <?php
 
-        require('navbar.php');
+        include_once('navbar.php');
+
         $fmt_style = 'style="vertical-align:top; border:1px solid black;"';
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "sportsteam";
         
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
 
         $sql = "SELECT id, Name_First, Name_Last, UserName, Role FROM userlogin";
-      $result = $conn->query($sql) or die($conn->error);
+        $result = $link->query($sql) or die($link->error);
 
       if ($result->num_rows > 0) {
         // output data of each row
@@ -76,7 +81,7 @@
 
 <?php
 $sql = "SELECT TeamID, TeamName, TeamCoach FROM leagueteam";
-$result = $conn->query($sql) or die($conn->error);
+$result = $link->query($sql) or die($link->error);
 
 if ($result->num_rows > 0) {
 // output data of each row
@@ -110,22 +115,13 @@ while($row = $result->fetch_assoc())
 
 <?php
 $sql = "SELECT UserName, Role, ts FROM userlogin";
-$result = $conn->query($sql) or die($conn->error);
-
-
-
-
-
+$result = $link->query($sql) or die($link->error);
 
 if ($result->num_rows > 0) {
 // output data of each row
 while($row = $result->fetch_assoc()) 
 {
-  $timest = $row['ts'];
-  $time = strtotime($timest);
-  $curtime = time();
-  if(($curtime-$time) < 172800)  //172800 seconds = 48 hours
-  {  
+
   echo "      <td </td>\n";
   echo "      <td </td>\n";
   echo "$row[UserName]";
@@ -134,7 +130,7 @@ while($row = $result->fetch_assoc())
   echo "      <td </td>\n";
   echo " $row[ts]";
   echo "      <tr>\n";
-}
+
 
 }
 }

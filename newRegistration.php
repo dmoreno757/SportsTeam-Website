@@ -1,5 +1,5 @@
 <?php
-    require_once('createDB.php');
+  require_once( 'createDB.php' );
 
      
         $firstName = trim($_REQUEST['firstName']);
@@ -26,76 +26,76 @@
         $role = strip_tags($_REQUEST['role']);
         $role = htmlspecialchars($_REQUEST['role']); 
 
-      
+        if (preg_match('/^[a-zA-Z0-9_]*$/', $password) && (preg_match('/^[a-zA-Z0-9_]*$/', $userName))) {
+        $query = "INSERT INTO UserLogin SET
+              Name_First = ?,
+              Name_Last  = ?,
+              Email      = ?,
+              UserName   = ?,
+              Password   = ?,
+              Role       = ?";
+                
+        if( ($stmt = $link->prepare($query)) === FALSE )
+        {
+            echo "Error: failed to prepare query: ". $link->error . "<br/>";
+            return -2;
+        }
+            
+        if( ($stmt->bind_param('sssssd', $firstName, $lastName, $email, $userName, password_hash($password, PASSWORD_DEFAULT), $role)) === FALSE )
+        {
+            echo "Error: failed to bind query parameters to query: ". $link->error . "<br/>";
+            return -3;
+        }
+            
+            
+        if( ($stmt->execute() && $stmt->affected_rows === 1) )
+        {
+            echo "Success: new user '$userName' created<br/>";
+            echo "-- display login form --<br/>";
+            require_once('login.php');
+        }
+        else                              // failure
+        {
+            echo "Failure: new user '$userName' not created:  " . $link->error . "<br/>";
+            echo "-- redisplay registration form --<br/>";
+        }
+    } else {
+        echo("Password rules don't match");
+        require_once('login.php');
+    }
+
         
+        /** 
         if (preg_match('/^[a-zA-Z0-9_]*$/', $password) && (preg_match('/^[a-zA-Z0-9_]*$/', $userName))) {
         $passwordHashed = password_hash($password, PASSWORD_DEFAULT);
-        if ($_REQUEST['role'] == 'Observer') {
-        $sql = "grant Select ON SportsTeam.* TO '$userName' identified by '$password'";
-        $resultPrev = $link->query($sql);
-        if ($resultPrev === TRUE) {
-            echo "Updated privelages 1";
-            } else {
-                echo "error:".$sql. "<br>".$link->error;
-             }
+       
+        if ($_REQUEST['role'] == 'observer') {
+            $roleIn = 'observer';
         }
-        else if ($_REQUEST['role'] == 'Users') {
-        $sql = "grant Create, Select, Update, Delete ON SportsTeam.* TO '$userName' identified by '$password'";
-        $resultPrev = $link->query($sql);
-        if ($resultPrev === TRUE) {
-            echo "Updated privelages 2";
-            } else {
-                echo "error:".$sql. "<br>".$link->error;
-             }
-        }
-        else if ($_REQUEST['role'] == 'Users') {
-        $sql = "grant Create, Select, Update, Delete ON SportsTeam.* TO '$userName' identified by '$password'";
-        $resultPrev = $link->query($sql);
-        if ($resultPrev === TRUE) {
-            echo "Updated privelages 3";
-            } else {
-                echo "error:".$sql. "<br>".$link->error;
-             }
-        }
-        else if ($_REQUEST['role'] == 'Executive Manager') {
-        $sql = "grant Create, Select, Update, Delete ON SportsTeam.* TO '$userName' identified by '$password'";
-        $resultPrev = $link->query($sql);
-        if ($resultPrev === TRUE) {
-            echo "Updated privelages 4";
-            } else {
-                echo "error:".$sql. "<br>".$link->error;
-             }
-        }
-        else if ($_REQUEST['role'] == 'DBS Administrator') {
-        $sql = "GRANT ALL ON SportsTeam.* TO '$userName' identified by '$password'";
-        $resultPrev = $link->query($sql);
-        if ($resultPrev === TRUE) {
-            echo "Updated privelages";
-            } else {
-                echo "error:".$sql. "<br>".$link->error;
-             }
-        }
-        else {
-            echo('Role not defined');
+        else if ($_REQUEST['role'] == 'users') {
+            $roleIn = 'users';
+        } else if ($_REQUEST['role'] == 'executive manager'){
+            $roleIn = 'executive manager';
         }
            
             
         $sqlReg = "INSERT INTO userlogin(Name_First, Name_Last, Email, UserName, Password, Role)
-        VALUES ('$firstName', '$lastName', '$email', '$userName', '$passwordHashed', '$role')";
-        $resultReg = $link->query($sqlReg);
+        VALUES ('$firstName', '$lastName', '$email', '$userName', '$passwordHashed', '$roleIn')";
+        $resultReg = $link2->query($sqlReg);
         
         
         if ($resultReg === TRUE) {
             echo "New Record Recorded";
             } else {
-                echo "error:" .$sqlStatPlayer."</br>".$mysqliStat->error;
+                echo "error:".$sqlReg. "<br>".$link2->error;
         }
-         require("login.php");
+         require_once("login.php");
         echo($role);
         } else {
 
 
          echo "Password does not follow the standard";
-            require('login.php');
+            require_once('login.php');
         }
+        */
 ?>
