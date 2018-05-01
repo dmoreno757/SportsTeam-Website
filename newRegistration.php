@@ -63,39 +63,4 @@
         echo("Password rules don't match");
         require_once('login.php');
     }
-
-        
-        /** 
-        if (preg_match('/^[a-zA-Z0-9_]*$/', $password) && (preg_match('/^[a-zA-Z0-9_]*$/', $userName))) {
-        $passwordHashed = password_hash($password, PASSWORD_DEFAULT);
-       
-        if ($_REQUEST['role'] == 'observer') {
-            $roleIn = 'observer';
-        }
-        else if ($_REQUEST['role'] == 'users') {
-            $roleIn = 'users';
-        } else if ($_REQUEST['role'] == 'executive manager'){
-            $roleIn = 'executive manager';
-        }
-           
-            
-        $sqlReg = "INSERT INTO userlogin(Name_First, Name_Last, Email, UserName, Password, Role)
-        VALUES ('$firstName', '$lastName', '$email', '$userName', '$passwordHashed', '$roleIn')";
-        $resultReg = $link2->query($sqlReg);
-        
-        
-        if ($resultReg === TRUE) {
-            echo "New Record Recorded";
-            } else {
-                echo "error:".$sqlReg. "<br>".$link2->error;
-        }
-         require_once("login.php");
-        echo($role);
-        } else {
-
-
-         echo "Password does not follow the standard";
-            require_once('login.php');
-        }
-        */
 ?>

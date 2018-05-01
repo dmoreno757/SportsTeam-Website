@@ -46,7 +46,6 @@
                     <option class="pure-menu-link" value = 1>Observer</option>
                     <option class="pure-menu-link" value = 2>Users</option>
                     <option class="pure-menu-link" value = 3>Executive Manager</option>
-                    <!--<option class="pure-menu-link" value="BS Administrator">DBS Administrator</option> -->
                 </select>
         </div>
 

@@ -33,10 +33,9 @@
 
         <div class="pure-menu pure-menu-horizontal">
                  <select name="role">
-                    <option class="pure-menu-link" value="Observer">Observer</option>
-                    <option class="pure-menu-link" value="Users">Users</option>
-                    <option class="pure-menu-link" value="Executive Manager">Executive Manager</option>
-                    <option class="pure-menu-link" value="DBS Administrator">DBS Administrator</option>
+                    <option class="pure-menu-link" value = 1>Observer</option>
+                    <option class="pure-menu-link" value = 2>Users</option>
+                    <option class="pure-menu-link" value = 3>Executive Manager</option>
                 </select>
         </div>
 
