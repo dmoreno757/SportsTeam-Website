@@ -39,7 +39,7 @@
     echo "Login attempt failed<br/>";
     // echo 'Password is valid!';
   }
-      require_once('login.php');
+      // require_once('login.php');
 
 
   // Login successful at this point, do some book keeping ...
