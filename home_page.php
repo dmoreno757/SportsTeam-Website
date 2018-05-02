@@ -15,7 +15,7 @@
       // Connect to database
       // require_once( 'Adaptation.php' );
       require_once('createDB.php');
-	  $link = mysqli_connect(DATA_BASE_HOST, $dbName, $dbPasswordLink, DATA_BASE_NAME);
+	    $link = mysqli_connect(DATA_BASE_HOST, $DBName, $DBPassword, DATA_BASE_NAME);
 
       // if connection was successful
       if( mysqli_connect_error() == 0 )  // Connection succeeded    PR
