@@ -15,42 +15,76 @@
       // Connect to database
       // require_once( 'Adaptation.php' );
       require_once('createDB.php');
+	  $link = mysqli_connect(DATA_BASE_HOST, $dbName, $dbPasswordLink, DATA_BASE_NAME);
+
       // if connection was successful
-      if( mysqli_connect_error() == 0 )  // Connection succeeded
+      if( mysqli_connect_error() == 0 )  // Connection succeeded    PR
       {
 ////////////////////////////// ---QUERY 2---- ///////////////////////////////////////////////
 		  $querytwo = "SELECT * FROM LeagueTeam";
-		  if(!$resulttwo = $link->query($querytwo))
+		  if(!$resulttwo = mysqli_query($link,$querytwo))  //PR
 		  {
 			  die('There was an error running the query part 2 ');
 		  }
+
 /////////////////////////////// ---QUERY 3---- ///////////////////////////////////////////////		  
-$query3 = "SELECT t1.TeamID_A, t1.GameRound, t1.TeamAPoints,  t2.TeamName
-				FROM GP_TeamA AS t1 INNER JOIN LeagueTeam AS t2
+
+$query3 = "SELECT t1.GameRound, t1.TeamID_A, t1.TeamAPoints, t1.DateTracker, t2.TeamName
+				FROM GP_Team AS t1 INNER JOIN LeagueTeam AS t2
 				 ON t1.TeamID_A = t2.TeamID
 				 ORDER BY GameRound"; 
 				
            // Check connection
              if($link === false){
-              die("ERROR: Could not connect. " . $link->connect_error);
+              die("ERROR: Could not connect. " . mysqli_connect_error()); //PR
                               }
+
 							  
+
 /////////////////////////////// ---QUERY 4---- ///////////////////////////////////////////////
-$query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
-				FROM GP_TeamB AS t3 INNER JOIN LeagueTeam AS t2
-				 ON t3.TeamID_B = t2.TeamID
+
+  $query4 = "SELECT t1.GameRound, t1.TeamID_B, t1.TeamBPoints, t1.DateTracker, t2.TeamName
+				FROM GP_Team AS t1 INNER JOIN LeagueTeam AS t2
+				 ON t1.TeamID_B = t2.TeamID
 				 ORDER BY GameRound"; 
 				
-           // Check connection
+          //  Check connection
              if($link === false){
-              die("ERROR: Could not connect. " . $link->connect_error);
+             die("ERROR: Could not connect. " . mysqli_connect_error()); // PR
                               }
 							  
+							  
+////////////////////////////////---QUERY 5----//////////////////////////////////////////////////////////////////
+	 $query5 = "SELECT    TeamID_A, TeamAPoints, TeamID_B, TeamBPoints, DateTracker, Months, Days, Years
+                           FROM GP_Team
+						   ORDER BY GameRound";	 
+                     // result5 changed to stmt 
+	    $stmt2 = mysqli_prepare($link,$query5);  //PR
+        // no query parameters to bind
+        mysqli_stmt_execute($stmt2);           //PR
+        mysqli_stmt_store_result($stmt2);     // PR
+        mysqli_stmt_bind_result($stmt2,	     // PR
+								$TeamID_A,
+								$TeamAPoints,								
+								$TeamID_B,
+								$TeamBPoints,
+		                        $DateTracker,
+                                $Months,
+								$Days,
+								$Years );
+														  
+							  
+          
 /////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 		  
         
 		// Build query to retrieve player's name, address, and averaged statistics from the joined Team Roster and Statistics tables
         $query = "SELECT
+		
+
+		
                     TeamRoster.ID,
                     TeamRoster.Name_First,
                     TeamRoster.Name_Last,
@@ -59,7 +93,8 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
                     TeamRoster.State,
                     TeamRoster.Country,
                     TeamRoster.ZipCode,
-                    COUNT(Statistics.Player),
+
+                    Statistics.TotalGames,
                     AVG(Statistics.PlayingTimeMin),
                     AVG(Statistics.PlayingTimeSec),
                     AVG(Statistics.Points),
@@ -73,13 +108,16 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
                   ORDER BY
                     TeamRoster.Name_Last,
                     TeamRoster.Name_First";
+
         // Prepare, execute, store results, and bind results to local variables
-        $stmt = $link->prepare($query);
+        $stmt = mysqli_prepare($link,$query);   //PR
         // no query parameters to bind
-        $stmt->execute();
-        $stmt->store_result();
-        $stmt->bind_result(
-						               $Name_ID,
+        mysqli_stmt_execute($stmt);           //PR
+        mysqli_stmt_store_result($stmt);      //PR
+        mysqli_stmt_bind_result($stmt,        //PR
+						   
+						   
+						   $Name_ID,
                            $Name_First,
                            $Name_Last,
                            $Street,
@@ -87,7 +125,8 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
                            $State,
                            $Country,
                            $ZipCode,
-                           $GamesPlayed,
+
+                           $TotalGames,
                            $PlayingTimeMin,
                            $PlayingTimeSec,
                            $Points,
@@ -99,7 +138,7 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
     <table style="width: 100%; border:0px solid black; border-collapse:collapse;">
       <tr>
         <th style="width: 40%;">Name and Address</th>
-        <th style="width: 60%;">Statistics</th>
+        <th style="width: 60%;">Players</th>
       </tr>
       <tr>
         <td style="vertical-align:top; border:1px solid black;">
@@ -165,8 +204,8 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
                     //     the value submitted is the unique ID for that player
                     // for example:
                     //     <option value="101">Duck, Daisy</option>
-                    $stmt->data_seek(0);
-                    while( $stmt->fetch() )
+                    mysqli_stmt_data_seek($stmt, 0);  //PR
+                    while( mysqli_stmt_fetch($stmt) )  //PR
                     {
                       $player = new Address([$Name_First, $Name_Last]);
                       echo "<option value=\"$Name_ID\">".$player->name()."</option>\n";
@@ -175,56 +214,78 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
                 </select></td>
               </tr>
 
-              <tr>
-                <td style="text-align: right; background: lightblue;">Playing Time (min:sec)</td>
-               <td><input type="text" name="time" value="" size="5" maxlength="5"/></td>
-              </tr>
 
               <tr>
-                <td style="text-align: right; background: lightblue;">Points Scored</td>
-               <td><input type="text" name="points" value="" size="3" maxlength="3"/></td>
+               <td colspan="2" style="text-align: center;"><input type="submit" value="Player Statistics" /><br/><br/></td>
               </tr>
-
+	      </table>
+          </form>
+	     </td>
+       </tr>
+    </table>  
+	
+			  <br/><br/>
+			      <table style="width: 100%; border:0px solid black; border-collapse:collapse;">
+      <tr>
+        <th style="width: 40%;">Game Schedules </th>
+                 <form action="" method="post">
+			    <table style="width: 100%; border:0px solid black; border-collapse:collapse;">
+                <td style="text-align: left; background: lightblue;">Date (dd-mm-yyyy)</td>
+				
+<!--            <td><input type="text" name="name" value="" size="50" maxlength="500"/></td>  -->
+                <td><select name="datetracker" required>
+                  <option value="" selected disabled hidden>Choose a date</option>
+                  <?php
+				
+				  
+		  	  if($stmt2 = mysqli_query($link,$query5) ){  //PR
+		  if(mysqli_num_rows($stmt2) > 0 ){     //PR
+				$i = 1;
+				while ($row5 = mysqli_fetch_array($stmt2))  // PR
+			  {
+			     echo "<option value=\"$i\">".$row5['Months']."-".$row5['Days']."-".$row5['Years']."</option>\n";
+		         ++$i;
+				}
+		    
+		
+		 }  
+		  }  
+                  ?>
+                </select></td>
+              </tr>		  
+			  
               <tr>
-                <td style="text-align: right; background: lightblue;">Assists</td>
-                <td><input type="text" name="assists" value="" size="2" maxlength="2"/></td>
+               <td colspan="2" style="text-align: center;"><input type="submit" value="Search Date" /></td>
               </tr>
-
-              <tr>
-                <td style="text-align: right; background: lightblue;">Rebounds</td>
-                <td><input type="text" name="rebounds" value="" size="2" maxlength="2"/></td>
-              </tr>
-
-              <tr>
-               <td colspan="2" style="text-align: center;"><input type="submit" value="Add Statistic" /></td>
-              </tr>
-            </table>
+			  
+           
+			 </table>
           </form>
         </td>
       </tr>
     </table>
+	
+<title>////////////////////// USE CASE 1 /////////////////////////////</title>
 <h2 style="text-align:center">Team League Chart</h2>
-<table class="table table-bordered table-dark">
-<thead>
+<table style="border:1px solid black; border-collapse:collapse;">
       <tr>
        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;"></th>
         <th colspan="2" style="vertical-align:top; border:1px solid black; background: lightblue;">Team Names</th>
+        
+        
       </tr>
-</thead>
       <?php
         $fmt_style = 'style="vertical-align:top; border:1px solid black;"';
-        $stmt->data_seek(0);
+        mysqli_stmt_data_seek($stmt,0); //PR
         $row_number = 0;
-        while( $stmt->fetch() )
+
+        while( mysqli_stmt_fetch($stmt) )   // PR
         {
-          // construct Address and PlayerStatistic objects supplying as constructor parameters the retrieved database columns
-        //  $player = new Address([$Name_First, $Name_Last], $Street, $City, $State, $Country, $ZipCode);
-       //   $stat   = new PlayerStatistic([$Name_First, $Name_Last], [$PlayingTimeMin, $PlayingTimeSec], $Points, $Assists, $Rebounds);
-		  
+
           echo "      </tr>\n";
-          // Emit table row data using appropriate getters from the Address and PlayerStatistic objects
+          // Emit table row data using table LeagueTeam
           echo "      <tr>\n";
-				while ($row = $resulttwo->fetch_assoc())
+				while ($row = mysqli_fetch_assoc($resulttwo)) // PR
 			{
 				echo "<tr><td  $fmt_style>".++$row_number."</td>";
 				echo "<td  $fmt_style>".($row['TeamName'])."</td></tr>";
@@ -236,34 +297,155 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
 </table>
 
 
-    <h2 style="text-align:center">TeamA vs. TeamB Game Stats</h2>
-    <table class="table table-striped table-dark">
-    <thead>
+
+
+<title>////////////////////// USE CASE 2 /////////////////////////////</title>
+<h2 style="text-align:center">Player Stats</h2>
+<table style="border:1px solid black; border-collapse:collapse;">
       <tr>
-    <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;"> Game Round </th>
+        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;">Name</th>
+        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;">Games Played</th>
+        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;">Time on Court</th>
+        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;">Points Scored</th>
+        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;">Number of Assists</th>
+        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;">Number of Rebounds</th>
+      </tr>
+	  
+<?php
+// refer to login.php for next page transfer
+        $fmt_style = 'style="vertical-align:top; border:1px solid black;"';
+        mysqli_stmt_data_seek($stmt,0);   // PR
+        $row_number = 0;
+		
+   $option = isset($_POST['name_ID']) ? $_POST['name_ID'] : false;
+   
+	
+	if($option != NULL)
+	{ // valid
+        while( mysqli_stmt_fetch($stmt) )   // PR
+     {
+          // construct Address and PlayerStatistic objects supplying as constructor parameters the retrieved database columns
+          $player = new Address([$Name_First, $Name_Last]);
+          $stat   = new PlayerStatistic([$Name_First, $Name_Last], [$PlayingTimeMin, $PlayingTimeSec], $Points, $Assists, $Rebounds);
+          
+		 
+		  
+	  if((int)$option === (int)$Name_ID)
+	    {
+			
+          // Emit table row data using appropriate getters from the Address and PlayerStatistic objects
+          echo "      <tr>\n";
+          echo "        <td  $fmt_style>".$player->name()." </td>\n";
+          echo "        <td  $fmt_style>".$TotalGames."</td>\n";
+          if($TotalGames>0)
+          {
+            echo "        <td  $fmt_style>".(int)$PlayingTimeMin.":".(int)$PlayingTimeSec."</td>\n";
+            echo "        <td  $fmt_style>".$stat->pointsScored()."</td>\n";
+            echo "        <td  $fmt_style>".$stat->assists()."</td>\n";
+            echo "        <td  $fmt_style>".$stat->rebounds()."</td>\n";
+          }
+          else
+          {
+            echo "        <td  style=\"border:1px solid black; border-collapse:collapse; background: #e6e6e6;\"></td>\n";
+            echo "        <td  style=\"border:1px solid black; border-collapse:collapse; background: #e6e6e6;\"></td>\n";
+            echo "        <td  style=\"border:1px solid black; border-collapse:collapse; background: #e6e6e6;\"></td>\n";
+            echo "        <td  style=\"border:1px solid black; border-collapse:collapse; background: #e6e6e6;\"></td>\n";
+          }
+          echo "      </tr>\n";
+        }
+	 }
+    }
+
+
+?>
+</table>
+
+<title>////////////////////// USE CASE 3 /////////////////////////////</title>
+<h2 style="text-align:center">Schedule</h2>
+<table style="border:1px solid black; border-collapse:collapse;">
+      <tr>
+	
+        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;">MatchUp</th>
+        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;">Result</th>
+        
+      </tr>
+	  
+<?php
+// refer to login.php for next page transfer
+        $fmt_style = 'style="vertical-align:top; border:1px solid black;"';
+
+		if(isset($_POST['datetracker']) && ($_POST['datetracker'] > 0))
+		{
+	$option2 = $_POST['datetracker'];   
+	
+		
+		
+  
+	
+		if($option2 != NULL)
+	{ // valid	
+
+		  if(($result3 = mysqli_query($link,$query3)) && ($result4 = mysqli_query($link,$query4))  ){  // PR
+		   if((mysqli_num_rows($result3) > 0) && ( mysqli_num_rows($result4) > 0) ){               // PR
+           	
+
+				while (($row = mysqli_fetch_array($result3)) && ($row2 = mysqli_fetch_array($result4)) )  // PR
+			    { 
+			
+	  if((int)$option2 === (int)$row['DateTracker'])
+	    {
+		
+          // Emit table row data using appropriate getters from the Address and PlayerStatistic objects
+          echo "      <tr>\n";
+			//	echo "<td  $fmt_style>". $row5['Months']."-".$row5['Days']."-".$row5['Years'] . "</td>\n";
+				echo "<td  $fmt_style>". $row['TeamName'] ."<br/>-vs-<br/>".$row2['TeamName']. "</td>\n";
+				echo "<td  $fmt_style>". $row['TeamAPoints'] ."<br/>---<br/>".$row2['TeamBPoints']. "</td>\n";
+
+          echo "      </tr>\n";
+        }
+	  }
+    }   
+  }
+}
+
+		}
+
+
+?>
+</table>
+
+
+<title>////////////////////// USE CASE 4 /////////////////////////////</title>
+<h2 style="text-align:center">TeamA vs. TeamB Game Stats</h2>
+<table style="border:1px solid black; border-collapse:collapse;">
+      <tr>
+       
+  
+        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;"> Game Round </th>
 		<th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;">Team Name</th>
 		<th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;">  Points  </th>
+        
       </tr>
-      </thead>
       <?php
         $fmt_style = 'style="vertical-align:top; border:1px solid black;"';
 	  
-		  if(($result3 = $link->query($query3)) && ($result4 = $link->query($query4))  ){
-		   if(($result3->num_rows > 0) && ($result4->num_rows > 0) ){
+		  if(($result3 = mysqli_query($link,$query3)) && ($result4 = mysqli_query($link,$query4))  ){   // PR
+		   if((mysqli_num_rows($result3) > 0) && (mysqli_num_rows($result4) > 0) ){                 // PR
           
-				while (($row = $result3->fetch_array()) && ($row2 = $result4->fetch_array()) )
+				while (($row = mysqli_fetch_array($result3)) && ($row2 = mysqli_fetch_array($result4)) )  // PR
 			    {
 				echo "      <tr>\n";
 			
 				echo "<td  $fmt_style>". $row['GameRound'] . "</td>\n";
-				echo "<td  $fmt_style>". $row['TeamName'] ."---".$row2['TeamName']. "</td>\n";
-				echo "<td  $fmt_style>". $row['TeamAPoints'] ."---".$row2['TeamBPoints']. "</td>\n";
+				echo "<td  $fmt_style>". $row['TeamName'] ."<br/>-vs-<br/>".$row2['TeamName']. "</td>\n";
+				echo "<td  $fmt_style>". $row['TeamAPoints'] ."<br/>---<br/>".$row2['TeamBPoints']. "</td>\n";
 				
 				
 				echo "      </tr>\n";
 				}
 			}
-		  $result3->free();
+		  mysqli_free_result($result3);   // PR
+		  mysqli_free_result($result4);   // PR
 		   }
 		   else
 		   {
@@ -280,66 +462,46 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
       ////////////////////////////////////////////////////////////////////////////////////////
 	  
     ?>
+	
+	
+	
+	<title>////////////////////// USE CASE 5 /////////////////////////////</title>
     <h2 style="text-align:center">Player Statistics</h2>
 
     <?php
       // emit the number of rows (records) in the table
-      echo "Number of Records:  ".$stmt->num_rows."<br/>";
+      echo "Number of Records:  ".mysqli_stmt_num_rows($stmt)."<br/>"; // PR
     ?>
 
-<table class="table table-bordered table-dark">
-  <thead>
+    <table style="border:1px solid black; border-collapse:collapse;">
       <tr>
-        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;"></th>
-        <th colspan="2" style="vertical-align:top; border:1px solid black; background: lightblue;">Player</th>
-        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightblue;"></th>
-        <th colspan="4" style="vertical-align:top; border:1px solid black; background: lightblue;">Statistic Averages</th>
+        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightgreen;"></th>
+        <th colspan="2" style="vertical-align:top; border:1px solid black; background: lightgreen;">Player</th>
+        <th colspan="1" style="vertical-align:top; border:1px solid black; background: lightgreen;"></th>
+        <th colspan="4" style="vertical-align:top; border:1px solid black; background: lightgreen;">Statistic Averages</th>
       </tr>
-      </thead>
       <tr>
-        <th style="vertical-align:top; border:1px solid black; background: lightblue;"></th>
-        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Name</th>
-        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Address</th>
+        <th style="vertical-align:top; border:1px solid black; background: lightgreen;"></th>
+        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Name</th>
+        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Address</th>
 
-        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Games Played</th>
-        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Time on Court</th>
-        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Points Scored</th>
-        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Number of Assists</th>
-        <th style="vertical-align:top; border:1px solid black; background: lightblue;">Number of Rebounds</th>
+        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Games Played</th>
+        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Time on Court</th>
+        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Points Scored</th>
+        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Number of Assists</th>
+        <th style="vertical-align:top; border:1px solid black; background: lightgreen;">Number of Rebounds</th>
       </tr>
       <?php
         $fmt_style = 'style="vertical-align:top; border:1px solid black;"';
-        $stmt->data_seek(0);
+        mysqli_stmt_data_seek($stmt,0); //PR
         $row_number = 0;
-        // for each row (record) of data retrieved from the database emit the html to populate a row in the table
-        // for example:
-        //  <tr>
-        //    <td  style="vertical-align:top; border:1px solid black;">1</td>
-        //    <td  style="vertical-align:top; border:1px solid black;">Dog, Pluto</td>
-        //    <td  style="vertical-align:top; border:1px solid black;">1313 S. Harbor Blvd.<br/>Anaheim, CA 92808-3232<br/>USA</td>
-        //    <td  style="vertical-align:top; border:1px solid black;">1</td>
-        //    <td  style="vertical-align:top; border:1px solid black;">10:0</td>
-        //    <td  style="vertical-align:top; border:1px solid black;">18</td>
-        //    <td  style="vertical-align:top; border:1px solid black;">2</td>
-        //    <td  style="vertical-align:top; border:1px solid black;">4</td>
-        //  </tr>
-        // or if there exists no statistical data for the player
-        //  <tr>
-        //    <td  style="vertical-align:top; border:1px solid black;">2</td>
-        //    <td  style="vertical-align:top; border:1px solid black;">Duck, Daisy</td>
-        //    <td  style="vertical-align:top; border:1px solid black;">1180 Seven Seas Dr.<br/>Lake Buena Vista, FL 32830<br/>USA</td>
-        //    <td  style="vertical-align:top; border:1px solid black;">0</td>
-        //    <td  style="border:1px solid black; border-collapse:collapse; background: #e6e6e6;"></td>
-        //    <td  style="border:1px solid black; border-collapse:collapse; background: #e6e6e6;"></td>
-        //    <td  style="border:1px solid black; border-collapse:collapse; background: #e6e6e6;"></td>
-        //    <td  style="border:1px solid black; border-collapse:collapse; background: #e6e6e6;"></td>
-        //  </tr>
-        //
-        while( $stmt->fetch() )
+
+        while( mysqli_stmt_fetch($stmt) )  //PR
         {
           // construct Address and PlayerStatistic objects supplying as constructor parameters the retrieved database columns
           $player = new Address([$Name_First, $Name_Last], $Street, $City, $State, $Country, $ZipCode);
           $stat   = new PlayerStatistic([$Name_First, $Name_Last], [$PlayingTimeMin, $PlayingTimeSec], $Points, $Assists, $Rebounds);
+
           // Emit table row data using appropriate getters from the Address and PlayerStatistic objects
           echo "      <tr>\n";
           echo "        <td  $fmt_style>".++$row_number."</td>\n";
@@ -347,10 +509,10 @@ $query4 = "SELECT t3.TeamID_B, t3.GameRound, t3.TeamBPoints,  t2.TeamName
           echo "        <td  $fmt_style>".$player->street()."<br/>"
                                          .$player->city().', '.$player->state().' '.$player->zip().'<br/>'
                                          .$player->country()."</td>\n";
-          echo "        <td  $fmt_style>".$GamesPlayed."</td>\n";
-          if($GamesPlayed >0)
+          echo "        <td  $fmt_style>".$TotalGames."</td>\n";
+          if($TotalGames >0)
           {
-            echo "        <td  $fmt_style>".$stat->playingTime()."</td>\n";
+            echo "        <td  $fmt_style>".(int)$PlayingTimeMin.":".(int)$PlayingTimeSec."</td>\n";
             echo "        <td  $fmt_style>".$stat->pointsScored()."</td>\n";
             echo "        <td  $fmt_style>".$stat->assists()."</td>\n";
             echo "        <td  $fmt_style>".$stat->rebounds()."</td>\n";
