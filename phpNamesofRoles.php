@@ -2,9 +2,9 @@
     define('DATA_BASE_NAME', 'SportsTeam');
     define('DATA_BASE_HOST', 'localhost');
 
-    define('NO_ROLE', 'executive manager');
+    define('NO_ROLE', 'Executive Manager');
 
-    $DBPasswords = ['observer' => 'password1',
-                   'users'     => 'password2',
-                   'executive manager' => 'password3'];
+    $DBPasswords = ['Observer' => 'Password1',
+                   'Users'     => 'Password2',
+                   'Executive Manager' => 'Password3'];
 ?>
