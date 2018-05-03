@@ -3,7 +3,8 @@
 <head>
 <body bgcolor="lightblue">
         <h1 style="text-align:center">Cal State Fullerton Basketball Statistics</h1>
-		
+			    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+        <link rel="stylesheet" href="stylesheets/stylesheet.css">	
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <body bgcolor="lightblue">
 <title>Player Stats</title>
@@ -107,7 +108,7 @@
 
               
                 <tr>
-               <td colspan="2" style="text-align: left;"><br/><br/><input type="submit" value="Player Statistics" /><br/><br/></td>
+               <td  colspan="2" style="text-align: left;"><br/><br/><input class="pure-button pure-button-primary" type="submit" value="Player Statistics" /><br/><br/></td>
                 </tr>
 			  
 	       </table>
