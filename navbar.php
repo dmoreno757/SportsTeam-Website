@@ -16,7 +16,10 @@
     <div class="navbar-nav">
       <a class="nav-item nav-link" href="welcome.php">Home <span class="sr-only">(current)</span></a>
       <a class="nav-item nav-link" href="about.php">About</a>
-      <a class="nav-item nav-link" href="home_page.php">Statistics</a>
+      <a class="nav-item nav-link" href="PlayerStats.php">PlayerStats</a>
+	  <a class="nav-item nav-link" href="LeagueList.php">LeagueTeams</a>
+	  <a class="nav-item nav-link" href="GameRounds.php">GameRounds</a>
+	  <a class="nav-item nav-link" href="Schedule.php">Schedule</a>
       <a class="nav-item nav-link" href="users.php">Users</a>
     </div>
     <ul class="nav navbar-nav navbar-right">
