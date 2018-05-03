@@ -17,10 +17,8 @@ if( empty($name)     ) $name      = null;
 
 if( ! empty($name) )  // Verify required fields are present
 {
-  require_once( 'Adaptation.php' );
-  $db = new mysqli(DATA_BASE_HOST, USER_NAME, USER_PASSWORD, DATA_BASE_NAME);
-  if( mysqli_connect_error() == 0 )  // Connection succeeded
-  {
+  require_once( 'createDB.php' );
+
     $query = "INSERT INTO Statistics SET
                 Player          = ?,
 			   PlayingTimeMin  = ?,
@@ -31,13 +29,12 @@ if( ! empty($name) )  // Verify required fields are present
 				
 				
 
-    $stmt = $db->prepare($query);
+    $stmt = $link->prepare($query);
 	
     $stmt->bind_param('dddddd', $name,$minutes, $seconds, $points, $assists, $rebounds);
     $stmt->execute();
-  }
+
 }
 
-require('home_page.php');
+require('PlayerStats.php');
 ?>
-
