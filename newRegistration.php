@@ -35,17 +35,9 @@
               Password   = ?,
               Role       = ?";
                 
-        if( ($stmt = $link->prepare($query)) === FALSE )
-        {
-            echo "Error: failed to prepare query: ". $link->error . "<br/>";
-            return -2;
-        }
-            
-        if( ($stmt->bind_param('sssssd', $firstName, $lastName, $email, $userName, password_hash($password, PASSWORD_DEFAULT), $role)) === FALSE )
-        {
-            echo "Error: failed to bind query parameters to query: ". $link->error . "<br/>";
-            return -3;
-        }
+        $stmt = $link->prepare($query);
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        $stmt->bind_param('sssssd', $firstName, $lastName, $email, $userName, $passwordHash, $role);
             
             
         if( ($stmt->execute() && $stmt->affected_rows === 1) )
@@ -58,6 +50,7 @@
         {
             echo "Failure: new user '$userName' not created:  " . $link->error . "<br/>";
             echo "-- redisplay registration form --<br/>";
+            require_once('login.php');
         }
     } else {
         echo("Password rules don't match");

@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <?php
           require_once('createDB.php');
-          // if( !authenticatedUser() )
-          //     {
-          //       echo "You must be logged in to access this page<br/>";
-          //       echo "-- display login form --<br/>";
-          //       return;
-          //     }
+        
+      
   
               
               echo "You are loggin as '" . $_SESSION['UserName'] . "' as '" . $_SESSION['UserRole'] . "'<br/>";
@@ -25,7 +21,7 @@
 
 <table width='350'  border="0" align="center" cellpadding="3" cellspacing="1" class="table table-bordered table-dark">
 
-
+        <h1>Welcome to the Site</h1>
       <tr>
         <th style="vertical-align:top; border:1px solid black; background: darkblue;">Registered Users IDs</th>
         <th style="vertical-align:top; border:1px solid black; background: lightblue;">Team Name</th>
@@ -36,6 +32,7 @@
       <?php
 
         include_once('navbar.php');
+        
 
         $fmt_style = 'style="vertical-align:top; border:1px solid black;"';
         

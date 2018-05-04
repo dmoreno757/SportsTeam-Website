@@ -11,7 +11,7 @@
        if ($_SESSION['UserRole'] != 'Executive Manager') {
            
             header("location: welcome.php");
-          echo('Get out');
+            echo('Get out');
           }
 
        $sql = "SELECT Name_First, Name_Last, Email, UserName, Password, Role From UserLogin";

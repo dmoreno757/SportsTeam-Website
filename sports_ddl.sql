@@ -63,6 +63,8 @@ CREATE TABLE UserLogin
     FOREIGN KEY (Role) REFERENCES Roles(ID_Role) ON DELETE CASCADE
 );
 
+GRANT select ON UserLogin TO 'Observer'@'localhost';
+GRANT select ON UserLogin TO 'Users'@'localhost';
 GRANT select, insert, delete, update ON UserLogin TO 'Executive Manager'@'localhost';
 
 

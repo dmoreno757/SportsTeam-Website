@@ -7,26 +7,18 @@
 
   $query = "SELECT Roles.roleName, UserLogin.Password FROM UserLogin, Roles WHERE UserName = ?  AND UserLogin.Role = Roles.ID_Role";
   
-  if( ($stmt = $link->prepare($query)) === FALSE )
-  {
-    echo "Error: failed to prepare query: ". $link->error . "<br/>";
-  }
-
-  if( ($stmt->bind_param('s', $userName)) === FALSE )
-  {
-    echo "Error: failed to bind query parameters to query: ". $link->error . "<br/>";
-  }
+  $stmt = $link->prepare($query);
+  $stmt->bind_param('s', $userName);
+ 
 
   if( !($stmt->execute() && $stmt->store_result() && $stmt->num_rows === 1) )
   {
     echo "Login attempt failed<br/>";
     echo "Failure: existing user '$userName' not found<br/>";
+    header('location: login.php');
   }
   
-  if( ($stmt->bind_result($roleName, $PWHash)) === FALSE )
-  {
-    echo "Error: failed to bind query results to local variables: ". $link->error . "<br/>";
-  }
+ $stmt->bind_result($roleName, $PWHash);
 
   
   if( ($stmt->fetch()) === FALSE )
@@ -39,7 +31,7 @@
     echo "Login attempt failed<br/>";
     // echo 'Password is valid!';
   }
-      // require_once('login.php');
+    
 
 
   // Login successful at this point, do some book keeping ...
