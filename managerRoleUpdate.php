@@ -22,6 +22,5 @@
 	              die ('SQL Error: ' . mysqli_error($link));
               }
 
-              include_once('users.php')
-    
+              include_once('users.php');
 ?>

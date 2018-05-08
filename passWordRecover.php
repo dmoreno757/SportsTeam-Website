@@ -19,7 +19,7 @@
         if ($counter == 1) {
         require 'PHPMailer\PHPMailerAutoload.php';
 
-        $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+        $mail = new PHPMailer(true);                              
         $mail->SMTPOptions = array(
         'ssl' => array(
         'verify_peer' => false,

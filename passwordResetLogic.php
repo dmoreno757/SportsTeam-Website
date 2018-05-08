@@ -1,6 +1,5 @@
 <?php
     require_once("createDB.php");
-    // require_once("rootConnections.php");
      $userName = trim($_POST['userName']);
      $userName = strip_tags($_POST['userName']);
      $userName = htmlspecialchars($_POST['userName']);

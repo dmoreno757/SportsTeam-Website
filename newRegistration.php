@@ -1,7 +1,5 @@
 <?php
   require_once( 'createDB.php' );
-
-     
         $firstName = trim($_REQUEST['firstName']);
         $firstName = strip_tags($_REQUEST['firstName']);
         $firstName = htmlspecialchars($_REQUEST['firstName']);
@@ -39,21 +37,18 @@
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $stmt->bind_param('sssssd', $firstName, $lastName, $email, $userName, $passwordHash, $role);
             
-            
         if( ($stmt->execute() && $stmt->affected_rows === 1) )
         {
             echo "Success: new user '$userName' created<br/>";
-            echo "-- display login form --<br/>";
             require_once('login.php');
         }
-        else                              // failure
+        else                           
         {
+            echo("Password rules don't match");
             echo "Failure: new user '$userName' not created:  " . $link->error . "<br/>";
-            echo "-- redisplay registration form --<br/>";
             require_once('login.php');
         }
     } else {
-        echo("Password rules don't match");
         require_once('login.php');
     }
 ?>

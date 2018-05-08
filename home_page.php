@@ -12,8 +12,6 @@
       require('navbar.php');
       require('Address.php');
       require('PlayerStatistic.php');
-      // Connect to database
-      // require_once( 'Adaptation.php' );
       require_once('createDB.php');
 	    $link = mysqli_connect(DATA_BASE_HOST, $DBName, $DBPassword, DATA_BASE_NAME);
 

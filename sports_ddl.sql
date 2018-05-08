@@ -39,8 +39,7 @@ CREATE TABLE Roles
 GRANT select, insert, delete, update ON Roles TO 'Executive Manager'@'localhost';
 
 INSERT INTO Roles VALUES 
--- NOTE:  These values MUST match the Database Users created at the end of this script
- (1, 'Observer'),  -- DEFAULT value
+ (1, 'Observer'),
  (2, 'Users'),
  (3, 'Executive Manager');
 

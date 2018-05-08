@@ -2,7 +2,7 @@
 
   require_once('createDB.php');
 
-  $userName = $_POST['userName'];  // design decision: usernames are case insensitive
+  $userName = $_POST['userName']; 
   $password = $_POST['password'];
 
   $query = "SELECT Roles.roleName, UserLogin.Password FROM UserLogin, Roles WHERE UserName = ?  AND UserLogin.Role = Roles.ID_Role";
@@ -26,18 +26,14 @@
     echo "Error: failed to fetch query results: ". $link->error . "<br/>";
   }
   
-  if (! password_verify($password, $PWHash)) 
+  if (!password_verify($password, $PWHash)) 
   {
     echo "Login attempt failed<br/>";
-    // echo 'Password is valid!';
   }
     
-
-
-  // Login successful at this point, do some book keeping ...
-  echo "Login successful for user '$userName' as '$roleName'<br/>";
+  echo "Login successful for user: '$userName' as '$roleName'<br/>";
   $_SESSION['UserName'] = $userName;
   $_SESSION['UserRole'] = $roleName;
   require_once('welcome.php');
         
-        ?>
+?>

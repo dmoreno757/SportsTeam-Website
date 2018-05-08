@@ -19,7 +19,6 @@
             <table style="margin: 0px auto; border: 0px; border-collapse:separate;">
               <tr>
                 <td style="text-align: right; background: lightblue;">Name (Last, First)</td>
-<!--            <td><input type="text" name="name" value="" size="50" maxlength="500"/></td>  -->
                 <td><select name="name_ID" required>
                   <option value="" selected disabled hidden>Choose player's name here</option>
                   <?php

@@ -8,7 +8,7 @@
       require_once('navbar.php');
 ?>
 <br>
-<h2> Created by David Moreno, </h2>
+<h2> Created by David Moreno,David Cao, Mohammed Hassnain </h2>
 <br>
 <h3>Project Description</h3>
 <p> A PHP and MySQL database application tasked with defining, implementing, 

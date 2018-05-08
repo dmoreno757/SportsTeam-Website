@@ -2,7 +2,6 @@
 session_start();
 require_once('phpNamesofRoles.php');
 
-     // If user has already been authenticated
   function userAccess()
   {
     global $DBPasswords;
@@ -25,7 +24,7 @@ require_once('phpNamesofRoles.php');
   printf("Connecting to DB as '%s'/'%s'<br/>", $DBName, $DBPassword);
   $link = mysqli_connect(DATA_BASE_HOST, $DBName, $DBPassword, DATA_BASE_NAME);
   
-  if( $link->connect_errno != 0)  // if connection not successful
+  if( $link->connect_errno != 0) 
   {
     echo "Error: failed to make a MySQL connection:  " . $link->connect_error . "<br/>";
     require_once('login.php');

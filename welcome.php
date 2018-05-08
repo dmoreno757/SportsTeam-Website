@@ -1,13 +1,8 @@
 <!DOCTYPE html>
 <?php
           require_once('createDB.php');
-        
-      
-  
-              
-              echo "You are loggin as '" . $_SESSION['UserName'] . "' as '" . $_SESSION['UserRole'] . "'<br/>";
-              echo "-- display login form --<br/>";
-          
+          echo "You are loggin as '" . $_SESSION['UserName'] . "' as '" . $_SESSION['UserRole'] . "'<br/>";
+          echo "-- display login form --<br/>";        
 ?>
 <html>
 <head>
