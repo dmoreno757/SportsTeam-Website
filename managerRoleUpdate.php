@@ -3,10 +3,10 @@
       include_once('createDB.php');
 
 
-       if ($_REQUEST['role'] == 'Observer') {
+       if ($_POST['role'] == 1) {
             $role = 1;
         }
-        else if ($_REQUEST['role'] == 'Users') {
+        else if ($_REQUEST['role'] == 2) {
             $role = 2;
         } else {
             $role = 3;

@@ -39,7 +39,7 @@
                 </select>
         </div>
 
-        <button class="pure-button pure-button-primary" type="submit" name="submit" value="submit">Register</button>
+        <button class="pure-button pure-button-primary" type="submit" name="submit" value="submit">Change</button>
     </fieldset>
 </form>
         </div>
