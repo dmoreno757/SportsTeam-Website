@@ -15,6 +15,7 @@
     <div class="navbar-nav">
       <a class="nav-item nav-link" href="managerResetPass.php">Reset Passwords<span class="sr-only">(current)</span></a>
       <a class="nav-item nav-link" href="changeroleManager.php">Change Roles</a>
+      <a class="nav-item nav-link" href="deleteUser.php">Delete User</a>
     </div>
   </div>
 </nav>
