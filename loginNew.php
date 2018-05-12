@@ -34,6 +34,11 @@
   echo "Login successful for user: '$userName' as '$roleName'<br/>";
   $_SESSION['UserName'] = $userName;
   $_SESSION['UserRole'] = $roleName;
+
+                    $update_query = "UPDATE UserLogin SET ts = CURRENT_TIMESTAMP where UserName = '$userName'";
+                    $result2 = mysqli_query($link, $update_query);
+                    $row2 = mysqli_fetch_array($result2);
+
   require_once('welcome.php');
         
 ?>
