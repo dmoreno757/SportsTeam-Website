@@ -72,7 +72,7 @@ GRANT select, insert, delete, update ON UserLogin TO 'Executive Manager'@'localh
 
 
 CREATE TABLE LeagueTeamCoach
-(  ID            INTEGER UNSIGNED NOT NULL,
+(  ID            INTEGER UNSIGNED NOT NULL AUTO_INCREMENT  PRIMARY KEY,
   Name_First    VARCHAR(100),
   Name_Last     VARCHAR(150)      NOT NULL,
   Email         VARCHAR(150)
