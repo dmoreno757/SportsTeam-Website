@@ -71,10 +71,34 @@ GRANT select, insert, delete, update ON UserLogin TO 'Executive Manager'@'localh
 
 
 
+CREATE TABLE LeagueTeamCoach
+(  ID            INTEGER UNSIGNED NOT NULL,
+  Name_First    VARCHAR(100),
+  Name_Last     VARCHAR(150)      NOT NULL,
+  Email         VARCHAR(150)
+);
+
+
+GRANT         Select                 ON LeagueTeamCoach TO 'Observer'         @'localhost';
+GRANT Insert, Select, Update, Delete ON LeagueTeamCoach TO 'Users'            @'localhost';
+GRANT Insert, Select, Update, Delete ON LeagueTeamCoach TO 'Executive Manager'@'localhost';
+
+
+INSERT INTO LeagueTeamCoach VALUES
+('1','Dead','Pool','Dp@gmail.com'),
+('2','Bat','Man','Bm@gmail.com'),
+('3','Dare','Devil','Dd@gmail.com'),
+('4','Hulk','Hogan','Hh@gmail.com'),
+('5','Cerci','Lannister','Cl@gmail.com'),
+('6','Morgan','Freeman','Mf@gmail.com'),
+('7','Joker','Slob','Js@gmail.com'),
+('8','Vin','Diesel','Vd@gmail.com');
+
+
+
 CREATE TABLE LeagueTeam
 ( TeamID      INTEGER UNSIGNED NOT NULL AUTO_INCREMENT  PRIMARY KEY,
-  TeamName    VARCHAR(100),
-  TeamCoach   VARCHAR(100)
+  TeamName    VARCHAR(100)
 );
 
 GRANT         Select                 ON LeagueTeam TO 'Observer'         @'localhost';
@@ -83,14 +107,14 @@ GRANT Insert, Select, Update, Delete ON LeagueTeam TO 'Executive Manager'@'local
 
 
 INSERT INTO LeagueTeam VALUES
-('1','CSUF Titans', 'Deadpool'),
-('2','UCI AntEaters','Batman'),
-('3','CSULB Wildcats','Daredevil'),
-('4','UCR GreenHornets','Hulk'),
-('5','UCSD Bees','Cerci Lannister'),
-('6','UCLA Bruins','Morgan Freeman'),
-('7','CSUSB Wolfs','Joker'),
-('8','CSULA Eagles','Vin Diesel');
+('1','CSUF Titans'),
+('2','UCI AntEaters'),
+('3','CSULB Wildcats'),
+('4','UCR GreenHornets'),
+('5','UCSD Bees'),
+('6','UCLA Bruins'),
+('7','CSUSB Wolfs'),
+('8','CSULA Eagles');
 
 
 
