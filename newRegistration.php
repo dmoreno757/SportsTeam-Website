@@ -24,7 +24,11 @@
         $role = strip_tags($_REQUEST['role']);
         $role = htmlspecialchars($_REQUEST['role']); 
 
+        
+
         if (preg_match('/^[a-zA-Z0-9_]*$/', $password) && (preg_match('/^[a-zA-Z0-9_]*$/', $userName))) {
+            $sql = "INSERT INTO TeamRoster(Name_First, Name_Last) VALUES ('$firstName', '$lastName')";
+        $link->query($sql);
         $query = "INSERT INTO UserLogin SET
               Name_First = ?,
               Name_Last  = ?,
@@ -32,7 +36,7 @@
               UserName   = ?,
               Password   = ?,
               Role       = ?";
-                
+
         $stmt = $link->prepare($query);
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $stmt->bind_param('sssssd', $firstName, $lastName, $email, $userName, $passwordHash, $role);

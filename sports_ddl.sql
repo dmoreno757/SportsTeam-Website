@@ -18,14 +18,7 @@ CREATE DATABASE           SportsTeam;
   DROP USER IF EXISTS 'admin'@'localhost';
   Create USER 'admin'@'localhost' IDENTIFIED BY 'Password4';
   
-  GRANT ALL PRIVILEGES ON SportsTeam.* TO 'admin'@'localhost';
-
-
-  
-
-  
-  
-  
+  GRANT ALL PRIVILEGES ON SportsTeam.* TO 'admin'@'localhost'; 
 USE SportsTeam;
 
 
@@ -37,6 +30,8 @@ CREATE TABLE Roles
 );
 
 GRANT select, insert, delete, update ON Roles TO 'Executive Manager'@'localhost';
+GRANT select  ON Roles TO 'Users'@'localhost';
+GRANT select  ON Roles TO 'Observer'@'localhost';
 
 INSERT INTO Roles VALUES 
  (1, 'Observer'),
@@ -62,8 +57,8 @@ CREATE TABLE UserLogin
     FOREIGN KEY (Role) REFERENCES Roles(ID_Role) ON DELETE CASCADE
 );
 
-GRANT select ON UserLogin TO 'Observer'@'localhost';
-GRANT select ON UserLogin TO 'Users'@'localhost';
+GRANT select, update ON UserLogin TO 'Observer'@'localhost';
+GRANT select, update ON UserLogin TO 'Users'@'localhost';
 GRANT select, insert, delete, update ON UserLogin TO 'Executive Manager'@'localhost';
 
 

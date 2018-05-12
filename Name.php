@@ -1,5 +1,5 @@
 <?php
-class Name
+class NamePlayer
 {
    // Instance attributes
    private $name         = array('FIRST'=>"", 'LAST'=>""); 

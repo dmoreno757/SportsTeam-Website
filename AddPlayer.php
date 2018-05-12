@@ -9,16 +9,18 @@
 <body bgcolor="lightblue">
 <title>Add-Player</title>
 <?php
-      require('navbar.php');
-	  require('Name.php');
-	  require('PlayerStatistic.php');
       require_once('createDB.php');
-	  
+     
        if ($_SESSION['UserRole'] == 'Observer') {
            
             header("location: welcome.php");
             echo('Get out');
           }
+
+           require_once('navbar.php');
+	    require('Name.php');
+	    require('PlayerStatistic.php');
+	  
 		  
 ////////////////////////////// ---QUERY 2---- ///////////////////////////////////////////////
 		// Build query to retrieve player's name, address, and averaged statistics from the joined Team Roster and Statistics tables
@@ -134,7 +136,7 @@
          while( mysqli_stmt_fetch($stmt) )   // PR
         {
           // construct Address and PlayerStatistic objects supplying as constructor parameters the retrieved database columns
-          $player = new Name([$Name_First, $Name_Last]);
+          $player = new Nameplayer([$Name_First, $Name_Last]);
           $stat   = new PlayerStatistic([$Name_First, $Name_Last], [$PlayingTimeMin, $PlayingTimeSec], $Points, $Assists, $Rebounds);
 
           // Emit table row data using appropriate getters from the Address and PlayerStatistic objects
