@@ -30,12 +30,7 @@
   {
     echo "Login attempt failed<br/>";
   }
-else{
-  
-         $update_query = "UPDATE UserLogin SET ts = CURRENT_TIMESTAMP where UserName = '$userName'";
-         $result2 = mysqli_query($link, $update_query);
-         $row2 = mysqli_fetch_array($result2); 
-}
+
     
   echo "Login successful for user: '$userName' as '$roleName'<br/>";
   $_SESSION['UserName'] = $userName;
