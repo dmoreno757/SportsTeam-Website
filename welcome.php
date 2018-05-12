@@ -72,12 +72,15 @@
 
 
 <?php
-$sql = "SELECT TeamID, TeamName, TeamCoach FROM leagueteam";
+$sql = "SELECT TeamID, TeamName FROM LeagueTeam";
 $result = $link->query($sql) or die($link->error);
 
-if ($result->num_rows > 0) {
+$sqltwo = "SELECT ID, Name_First, Name_Last FROM LeagueTeamCoach";
+$resulttwo = $link->query($sqltwo) or die($link->error);
+
+if (($result->num_rows > 0) &&  ($resulttwo->num_rows > 0)) {
 // output data of each row
-while($row = $result->fetch_assoc()) 
+while(($row = $result->fetch_assoc()) && ($rowtwo = $resulttwo->fetch_assoc()) ) 
 {
 
   echo "      <td </td>\n";
@@ -85,7 +88,7 @@ while($row = $result->fetch_assoc())
   echo "      <td </td>\n";
   echo "$row[TeamName]";
   echo "      <td </td>\n";
-  echo " $row[TeamCoach]";
+  echo " $rowtwo[Name_First]"." "."$rowtwo[Name_Last]";
   echo "      <td </td>\n";
   echo "      <tr>\n";
 
