@@ -20,6 +20,7 @@
 	  <a class="nav-item nav-link" href="LeagueList.php">LeagueTeams</a>
 	  <a class="nav-item nav-link" href="GameRounds.php">GameRounds</a>
 	  <a class="nav-item nav-link" href="Schedule.php">Schedule</a>
+	    <a class="nav-item nav-link" href="AddPlayer.php">Add-Player</a>
       <a class="nav-item nav-link" href="users.php">Manager Tools</a>
     </div>
     <ul class="nav navbar-nav navbar-right">
